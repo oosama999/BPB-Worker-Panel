@@ -146,6 +146,9 @@ export default {
                         if (loginAuth) return Response.redirect(`${url.origin}/panel`, 302);
 
                         let secretKey = await env.bpb.get('secretKey');
+			const pwd = await env.bpb.get('pwd');
+                        if (!pwd) await env.bpb.put('pwd', 'admin');
+				
                         if (!secretKey) {
                             secretKey = generateSecretKey();
                             await env.bpb.put('secretKey', secretKey);
@@ -214,7 +217,7 @@ export default {
                         });
 
                     default:
-                        // return new Response('Not found', { status: 404 });
+                        return new Response('Not found', { status: 404 });
                         url.hostname = 'www.speedtest.net';
                         url.protocol = 'https:';
                         request = new Request(url, request);
